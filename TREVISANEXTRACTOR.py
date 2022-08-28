@@ -107,14 +107,26 @@ def OneBitExt(sottoseed, source, error):
             
      
 """
+Inserimento source e seed
+"""
+q= input("Enter the file name of the SOURCE (with .txt extension, default source.txt): ")
+f1=open(q or "source.txt","r")
+a=f1.read()
+
+w= input("Enter the file name of the SEED (with .txt extension, default seed.txt): ")
+f2=open(w or "seed.txt","r")
+b=f2.read()
+
+"""
 Definizione parametri e costanti
 """
-start_time = time.time()
 
 r=2*np.e
 n=int(input("Qual è la lunghezza della stringa in input?")) 
 alpha=float(input("Qual è la min-entropy della stringa in input?")) 
 eps=float(input("Qual è l'errore per bit per la costruzione finale?"))
+
+start_time = time.time()
 
 k=alpha*n;
 m=int(np.floor((k-4*np.log2(1/eps)-6)/r));
@@ -124,17 +136,6 @@ m=int(np.floor((k-4*np.log2(1/eps)-6)/r));
 t_req=int(2*np.ceil(np.log2(n)+2*np.log2(2/eps)))
 t=int(2**(np.ceil(np.log2(t_req))))                                            #Trasformiamo t_req nella potenza di 2 più vicina e più grande, poichè il WD funziona con t che sono potenze di 2 quindi sarà t>t_req
 d=t**2                         
-
-"""
-Inserimento source e seed
-"""
-q= input("Enter the file name of the SOURCE (with .txt extension): ")
-f1=open(q,"r")
-a=f1.read()
-
-w= input("Enter the file name of the SEED (with .txt extension): ")
-f2=open(w,"r")
-b=f2.read()
 
 seed=[]
 source=[]
@@ -152,8 +153,10 @@ Algoritmo Trevisan's extractor
 
 rho=[0]*m
 
+print(f'Extracting {m} bits, one per iteration')
+
 for i in range(m):
-    print(i/m*100)
+    print(f'Iteration {i+1}: {i/m:6.2%}')
     S=WDcomputeS(i,m,t,t_req)
     b=[0]*t_req                          
     
